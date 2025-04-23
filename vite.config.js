@@ -23,12 +23,16 @@ export default defineConfig({
         },
     },
     server: {
+        host: '0.0.0.0',
+        strictPort: true,
+        port: 5173,
         hmr: {
-            host: '0.0.0.0',
+            protocol: 'ws',
+            host: 'localhost',
+            port: 5173
         },
         watch: {
-            usePolling: true,
-        },
-        host: '0.0.0.0',
+            usePolling: true
+        }
     },
 });

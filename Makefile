@@ -15,3 +15,6 @@ install:
 clean:
 	docker-compose exec app php artisan cache:clear
 	docker-compose exec app php artisan view:clear
+
+shell:
+	docker compose exec app bash
