@@ -4,7 +4,7 @@
     </Head>
 
     <div class="p-6">
-        <h1 class="text-2xl font-bold">Hello Inertia + Vue3 🎉</h1>
+        <h1 class="text-2xl font-bold">Hello Inertia + Vue3  🎉</h1>
         <p class="mt-4">{{ message }}</p>
 <!--        <Link href="/about" class="text-blue-600 underline">Go to About</Link>-->
     </div>

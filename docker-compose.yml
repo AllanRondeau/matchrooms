@@ -1,0 +1,55 @@
+version: '3'
+services:
+    app:
+        build:
+            args:
+                user: sail
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "5173:5173"
+        image: matchrooms
+        container_name: matchrooms-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - matchrooms
+
+    nginx:
+        image: nginx:alpine
+        container_name: matchrooms-nginx
+        restart: unless-stopped
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d/
+        networks:
+            - matchrooms
+
+    db:
+        image: postgres:14
+        container_name: matchrooms-db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: matchrooms
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - matchrooms-data:/var/lib/postgresql/data/pgdata
+        ports:
+            - "5432:5432"
+        networks:
+            - matchrooms
+
+networks:
+    matchrooms:
+        driver: bridge
+
+volumes:
+    matchrooms-data:
+        driver: local
