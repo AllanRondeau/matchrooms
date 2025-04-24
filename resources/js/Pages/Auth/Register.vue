@@ -28,7 +28,7 @@ const passwordStrength = ref(0);
 const passwordMessage = ref('');
 
 const inputClass = computed(() => {
-    return `w-full rounded-xl bg-white/80 backdrop-blur-sm border-0 px-5 py-4 text-gray-800 shadow-sm ring-1 ring-inset 
+    return `w-full rounded-xl bg-white/80 backdrop-blur-sm border-0 px-5 py-4 text-gray-800 shadow-sm ring-1 ring-inset
            ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-pink-500 transition duration-300`;
 });
 
@@ -48,29 +48,29 @@ const togglePasswordVisibility = (field) => {
 
 const checkPasswordStrength = () => {
     const password = form.password;
-    
+
     if (!password) {
         passwordStrength.value = 0;
         passwordMessage.value = '';
         return;
     }
-    
+
     let strength = 0;
-    
+
     // Length check
     if (password.length >= 8) strength += 1;
-    
+
     // Contains lowercase and uppercase
     if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 1;
-    
+
     // Contains numbers
     if (/[0-9]/.test(password)) strength += 1;
-    
+
     // Contains special characters
     if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-    
+
     passwordStrength.value = strength;
-    
+
     if (strength < 2) {
         passwordMessage.value = 'Faible';
     } else if (strength < 3) {
@@ -84,7 +84,7 @@ const nextStep = () => {
     if (!form.first_name || !form.last_name || !form.email) {
         return;
     }
-    
+
     gsap.to('.register-step-1', {
         x: '-100%',
         opacity: 0,
@@ -98,7 +98,7 @@ const nextStep = () => {
                     duration: 0.5,
                     stagger: 0.1
                 });
-                
+
                 // Focus email input on next step
                 setTimeout(() => {
                     if (emailInput.value) emailInput.value.focus();
@@ -122,7 +122,7 @@ const prevStep = () => {
                     duration: 0.5,
                     stagger: 0.1
                 });
-                
+
                 // Focus first name input on previous step
                 setTimeout(() => {
                     if (firstNameInput.value) firstNameInput.value.focus();
@@ -136,7 +136,7 @@ const submit = () => {
     if (!form.terms) {
         return;
     }
-    
+
     isLoading.value = true;
     form.post(route('register'), {
         onFinish: () => {
@@ -154,7 +154,7 @@ onMounted(() => {
         stagger: 0.1,
         ease: 'power2.out'
     });
-    
+
     // Focus first name input
     firstNameInput.value.focus();
 });
@@ -169,7 +169,7 @@ onMounted(() => {
             <div class="absolute -left-32 -bottom-20 w-64 h-64 rounded-full bg-pink-100/50 blur-3xl animate-blob"></div>
             <div class="absolute -right-32 top-20 w-64 h-64 rounded-full bg-blue-100/50 blur-3xl animate-blob" style="animation-delay: 2s"></div>
             <div class="absolute left-1/2 -translate-x-1/2 bottom-32 w-32 h-32 rounded-full bg-pink-100/30 blur-2xl animate-pulse"></div>
-            
+
             <!-- Card container with glassmorphism effect -->
             <div class="relative z-10 max-w-md mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 sm:p-10 overflow-hidden">
                 <div class="mb-8 text-center">
@@ -253,7 +253,7 @@ onMounted(() => {
                             </div>
                             <InputError class="mt-2" :message="form.errors.email" />
                         </div>
-                        
+
                         <div class="register-step-1">
                             <InputLabel for="phone_number" value="Téléphone (optionnel)" class="text-gray-700 mb-2 block font-medium" />
                             <div class="relative">
@@ -310,9 +310,9 @@ onMounted(() => {
                                     placeholder="••••••••"
                                     @input="checkPasswordStrength"
                                 />
-                                <button 
-                                    type="button" 
-                                    @click="togglePasswordVisibility('password')" 
+                                <button
+                                    type="button"
+                                    @click="togglePasswordVisibility('password')"
                                     class="absolute inset-y-0 right-0 pr-3 flex items-center"
                                 >
                                     <svg v-if="isPasswordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-gray-600" viewBox="0 0 20 20" fill="currentColor">
@@ -325,12 +325,12 @@ onMounted(() => {
                                     </svg>
                                 </button>
                             </div>
-                            
+
                             <!-- Password strength indicator -->
                             <div v-if="form.password" class="mt-2">
                                 <div class="flex items-center justify-between mb-1">
                                     <div class="w-full bg-gray-200 rounded-full h-1.5 mr-2">
-                                        <div class="h-1.5 rounded-full transition-all duration-300" 
+                                        <div class="h-1.5 rounded-full transition-all duration-300"
                                              :class="passwordStrengthColor"
                                              :style="{ width: `${passwordStrength * 25}%` }"></div>
                                     </div>
@@ -344,7 +344,7 @@ onMounted(() => {
                                     Utilisez au moins 8 caractères avec des lettres majuscules, minuscules, des chiffres et des symboles.
                                 </p>
                             </div>
-                            
+
                             <InputError class="mt-2" :message="form.errors.password" />
                         </div>
 
@@ -365,9 +365,9 @@ onMounted(() => {
                                     autocomplete="new-password"
                                     placeholder="••••••••"
                                 />
-                                <button 
-                                    type="button" 
-                                    @click="togglePasswordVisibility('confirmation')" 
+                                <button
+                                    type="button"
+                                    @click="togglePasswordVisibility('confirmation')"
                                     class="absolute inset-y-0 right-0 pr-3 flex items-center"
                                 >
                                     <svg v-if="isConfirmPasswordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 hover:text-gray-600" viewBox="0 0 20 20" fill="currentColor">

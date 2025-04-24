@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Http\Request;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -17,7 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
-
+        $middleware->redirectGuestsTo(fn (Request $request) => '/');
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
         $middleware->web(append: [
             HandleInertiaRequests::class,
         ]);

@@ -1,11 +1,12 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
-
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use App\Http\Controllers\LandingController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -18,15 +19,36 @@ Route::get('/Welcome', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        return Inertia::render('Home');
+    })->middleware(['auth', 'verified'])->name('home');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'verified', 'role:hotelier'])->prefix('hotelier')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Pro/Dashboard');
+    })->name('pro.dashboard');
+
+    Route::get('/rooms', function () {
+        return Inertia::render('Pro/Rooms/Index');
+    })->name('pro.rooms.index');
+
+    Route::get('/rooms/create', function () {
+        return Inertia::render('Pro/Rooms/Create');
+    })->name('pro.rooms.create');
+
+    Route::get('/reservations', function () {
+        return Inertia::render('Pro/Reservations/Index');
+    })->name('pro.reservations.index');
+
+    Route::get('/statistics', function () {
+        return Inertia::render('Pro/Statistics');
+    })->name('pro.statistics');
+});
 
 require __DIR__.'/auth.php';
