@@ -1,3 +1,437 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import custom animations */
+@import 'animations.css';
+
+/* Custom styles for MatchRoom */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans antialiased text-gray-800;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  /* Adding smooth scrolling to all anchors */
+  a[href^="#"] {
+    scroll-behavior: smooth;
+    transition: color 0.3s ease;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-700 px-6 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition shadow-md;
+  }
+
+  /* Customized hover effects for buttons */
+  .btn-primary:hover, .btn-secondary:hover {
+    @apply transform -translate-y-0.5 shadow-lg;
+  }
+
+  /* Navbar animation */
+  .nav-link {
+    @apply relative font-medium text-gray-700 hover:text-pink-500 transition-colors;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-pink-500 transition-all duration-300 content-[''];
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Card hover effect */
+  .hover-card {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .hover-card:hover {
+    @apply transform -translate-y-2 shadow-xl;
+  }
+  
+  /* Interactive elements */
+  .interactive-element {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+}
+
+/* Animation styles */
+.animate-on-scroll {
+  opacity: 0;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(40px);
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade transition for testimonials */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Section activation styling */
+.section-active {
+  position: relative;
+}
+
+.section-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 45, 125, 0), rgba(255, 45, 125, 1), rgba(255, 45, 125, 0));
+  animation: shimmer 2s infinite;
+}
+
+/* Custom cursor effect */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: rgba(255, 45, 125, 0.3);
+  mix-blend-mode: difference;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+}
+
+.custom-cursor.hovering {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 45, 125, 0.15);
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(to right, #0D1F40, #FF135F);
+  z-index: 9999;
+  transition: width 0.2s ease;
+}
+
+/* Mobile menu animation */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Price animation */
+@keyframes priceChange {
+  0% { color: #000; transform: scale(1); }
+  50% { color: #FF2D7D; transform: scale(1.1); }
+  100% { color: #000; transform: scale(1); }
+}
+
+.price-change {
+  animation: priceChange 0.5s ease;
+}
+
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(90deg, #FF2D7D, #0D1F40);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Styles supplémentaires pour la typographie et les animations */
+
+/* Configuration typographique spécifique */
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+  --font-righteous: 'Righteous', cursive;
+  --color-primary: #FF135F;
+  --color-secondary: #0E2748;
+  --color-neutral: #2E2E38;
+  --color-light: #F4F3F3;
+  --color-accent-1: #E9E1DC;
+  --color-accent-2: #F7E6E2;
+  --color-accent-3: #D6E1E5;
+}
+
+/* Typographie selon les spécifications */
+body {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-neutral);
+}
+
+/* Sous-titres */
+.subtitle-playfair {
+  font-family: var(--font-playfair);
+  font-weight: 400;
+  font-size: 28px;
+}
+
+.subtitle-righteous {
+  font-family: var(--font-righteous);
+  font-weight: 400;
+  font-size: 28px;
+}
+
+/* Titres */
+.title {
+  font-family: var(--font-righteous);
+  font-weight: 400;
+  font-size: 48px;
+}
+
+/* Gros titres (nous sommes) */
+.hero-title {
+  font-family: var(--font-righteous);
+  font-weight: 400;
+  font-size: 96px;
+}
+
+.nous-sommes {
+  letter-spacing: 15%;
+}
+
+.entremetteur {
+  letter-spacing: 9%;
+}
+
+/* Animations améliorées */
+.text-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.text-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animation des cartes */
+.card {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet de surbrillance pour les boutons */
+.btn-glow {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.btn-glow:hover::after {
+  left: 100%;
+}
+
+/* Effet parallaxe pour les arrière-plans */
+.parallax-bg {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Animation de rotation pour les icônes */
+.icon-rotate {
+  transition: transform 0.3s ease;
+}
+
+.icon-rotate:hover {
+  transform: rotate(10deg);
+}
+
+/* Animation pour la barre de négociation */
+.negotiation-bar {
+  position: relative;
+  height: 8px;
+  width: 100%;
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.negotiation-bar-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animation pour le texte "NOUS SOMMES" */
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 30px rgba(255, 19, 95, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 50px rgba(255, 19, 95, 0.8);
+  }
+}
+
+.text-glow {
+  animation: textGlow 3s infinite;
+}
+
+/* Animation fluide pour les transitions entre pages */
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-primary);
+  z-index: 9999;
+  transform: translateY(100%);
+  transition: transform 0.7s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.page-transition.active {
+  transform: translateY(0);
+}
+
+/* Effet de défilement des images */
+.image-scroll {
+  transition: transform 0.3s ease-out;
+}
+
+.image-container:hover .image-scroll {
+  transform: scale(1.1);
+}
+
+/* Apparition progressive des éléments au scroll */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Effet de soulignement animé pour les liens de navigation */
+.nav-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Animation de particules pour l'arrière-plan */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+.particle {
+  position: absolute;
+  background-color: rgba(255, 19, 95, 0.1);
+  border-radius: 50%;
+  animation: floatParticle 15s infinite linear;
+}
+
+/* Curseur personnalisé */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  backdrop-filter: invert(1);
+  transform: translate(-50%, -50%);
+}
+
+/* Mise en évidence des éléments interactifs */
+.interactive {
+  position: relative;
+}
+
+.interactive::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 19, 95, 0.2), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.interactive:hover::before {
+  opacity: 1;
+}

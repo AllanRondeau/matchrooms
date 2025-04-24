@@ -1,0 +1,388 @@
+/* MatchRoom Animation CSS */
+
+/* Reveal Animations */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Interactive Animations */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 45, 125, 0.7);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(255, 45, 125, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 45, 125, 0);
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes floatHorizontal {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(20px);
+    }
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  @keyframes blob {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+  }
+  
+  /* Button Animations */
+  @keyframes btnShadowPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 45, 125, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 15px rgba(255, 45, 125, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 45, 125, 0);
+    }
+  }
+  
+  /* Loading Animations */
+  @keyframes loadingDots {
+    0%, 80%, 100% {
+      transform: scale(0);
+      opacity: 0.5;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Hover Effect Animations */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-rotate {
+    transition: transform 0.5s ease;
+  }
+  
+  .hover-rotate:hover {
+    transform: rotate(5deg);
+  }
+  
+  .hover-glow {
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(255, 45, 125, 0.5);
+  }
+  
+  /* Animation Utility Classes */
+  .animate-fadeInUp {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+  
+  .animate-fadeInDown {
+    animation: fadeInDown 0.6s ease forwards;
+  }
+  
+  .animate-fadeInLeft {
+    animation: fadeInLeft 0.6s ease forwards;
+  }
+  
+  .animate-fadeInRight {
+    animation: fadeInRight 0.6s ease forwards;
+  }
+  
+  .animate-zoomIn {
+    animation: zoomIn 0.6s ease forwards;
+  }
+  
+  .animate-pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-spin {
+    animation: spin 10s linear infinite;
+  }
+  
+  .animate-bounce {
+    animation: bounce 2s ease infinite;
+  }
+  
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0)
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  .animate-blob {
+    animation: blob 8s ease-in-out infinite;
+  }
+  
+  .animate-btn-pulse {
+    animation: btnShadowPulse 2s infinite;
+  }
+  
+  /* Animation Delays */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+  
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+  
+  /* Loading Spinner */
+  .loading-spinner {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  
+  .loading-spinner div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: rgba(255, 45, 125, 1);
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  
+  .loading-spinner div:nth-child(1) {
+    left: 8px;
+    animation: loadingDots 0.6s infinite;
+  }
+  
+  .loading-spinner div:nth-child(2) {
+    left: 8px;
+    animation: loadingDots 0.6s infinite 0.2s;
+  }
+  
+  .loading-spinner div:nth-child(3) {
+    left: 32px;
+    animation: loadingDots 0.6s infinite 0.4s;
+  }
+  
+  .loading-spinner div:nth-child(4) {
+    left: 56px;
+    animation: loadingDots 0.6s infinite 0.6s;
+  }
+  
+  /* Animated Backgrounds */
+  .animated-gradient {
+    background: linear-gradient(-45deg, #0D1F40, #FF2D7D, #FF85BC, #0D1F40);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Glass morphism effect with animation */
+  .glass-morph {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .glass-morph:hover {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  /* GSAP helper classes */
+  .gsap-reveal {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  /* Cursor follow effect */
+  .cursor-follow {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(255, 45, 125, 0.5);
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+  }
+  
+  /* Type animation */
+  .typewriter {
+    overflow: hidden;
+    border-right: 2px solid;
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(255, 45, 125, 1) }
+  }
