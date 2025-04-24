@@ -14,7 +14,9 @@ const form = useForm({
     phone_number: '',
     password: '',
     password_confirmation: '',
-    terms: false
+    terms: false,
+    company_name: '',
+    is_hotel: false,
 });
 
 const isStepOne = ref(true);
@@ -138,6 +140,7 @@ const submit = () => {
     }
 
     isLoading.value = true;
+    form.is_hotel = isHotel.value
     form.post(route('register'), {
         onFinish: () => {
             isLoading.value = false;

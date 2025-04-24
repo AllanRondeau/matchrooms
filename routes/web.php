@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -34,6 +35,11 @@ Route::middleware(['auth', 'verified', 'role:hotelier'])->prefix('hotelier')->gr
         return Inertia::render('Pro/Dashboard');
     })->name('pro.dashboard');
 
+    Route::post('/hotel/information', [HotelController::class, 'store'])->name('hotel.store');
+    Route::post('/hotel/{id}', [HotelController::class, 'update'])->name('hotel.update');
+    Route::get('/hotel/{id}/edit', [HotelController::class, 'edit'])->name('hotel.edit');
+    Route::get('/hotel/information', [HotelController::class, 'create'])->name('hotel.create');
+
     Route::get('/rooms', function () {
         return Inertia::render('Pro/Rooms/Index');
     })->name('pro.rooms.index');
@@ -51,4 +57,4 @@ Route::middleware(['auth', 'verified', 'role:hotelier'])->prefix('hotelier')->gr
     })->name('pro.statistics');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
