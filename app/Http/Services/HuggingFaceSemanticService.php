@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
