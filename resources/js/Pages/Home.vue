@@ -122,8 +122,6 @@ const submitNegotiation = () => {
   nextRoom();
 };
 
-
-
 const openNegotiation = () => {
   const hotelId = rooms[currentIndex.value].id;
   const existing = negotiationSent.value[hotelId];
@@ -158,66 +156,89 @@ setInterval(updateCountdown, 1000);
 </script>
 
 <template>
-  <div class="relative min-h-screen bg-[#d6E1E5] flex flex-col items-center">
-
+  <div class="relative min-h-screen bg-[#F4F3F3] flex flex-col items-center">
     <!-- SIDEBAR -->
     <transition name="slide">
       <aside
-          v-if="sidebarVisible"
-          class="fixed top-0 left-0 h-full w-64 bg-[#d6E1E5] shadow-md z-50 flex flex-col p-6 space-y-6 border-r border-gray-300"
+        v-if="sidebarVisible"
+        class="fixed top-0 left-0 h-full w-72 bg-white shadow-xl z-50 flex flex-col p-6 space-y-6 border-r border-[#E9E1DC]"
       >
         <!-- Header du menu -->
         <div class="flex justify-between items-center mb-6">
-          <img src="/images/logoMR.png" alt="Logo MatchRoom" class="w-24" />
-          <button @click="toggleSidebar" class="text-gray-500 hover:text-pink-500 text-2xl transition">
-            ✖
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoMR-TakbHOAaljFXg5P560GFVsP1M2q0Tx.png" alt="Logo MatchRoom" class="h-10" />
+          <button @click="toggleSidebar" class="text-[#2E2E38] hover:text-[#FF135F] transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
 
         <!-- Liens du menu -->
-        <nav class="flex flex-col gap-4 text-[#2D2C33] font-semibold">
-          <a href="/liked-rooms" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-             <span>Toutes les chambres likées</span>
+        <nav class="flex flex-col gap-2 text-[#2E2E38] font-medium">
+          <a href="/liked-rooms" class="flex items-center gap-3 hover:bg-[#F7E6E2] px-4 py-3 rounded-xl transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span>Chambres likées</span>
           </a>
-          <a href="/map" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-             <span>Map Finder</span>
+          <a href="/map" class="flex items-center gap-3 hover:bg-[#F7E6E2] px-4 py-3 rounded-xl transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+            <span>Map Finder</span>
           </a>
-          <a href="/negociations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-             <span>Négociations en cours</span>
+          <a href="/negociations" class="flex items-center gap-3 hover:bg-[#F7E6E2] px-4 py-3 rounded-xl transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+            <span>Négociations en cours</span>
           </a>
-          <a href="#" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-             <span>Mes réservations</span>
+          <a href="#" class="flex items-center gap-3 hover:bg-[#F7E6E2] px-4 py-3 rounded-xl transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Mes réservations</span>
           </a>
-          <NavLink
-            :href="route('logout')"
-            method="post"
-          >
-            Se déconnecter
-          </NavLink>
+          <div class="pt-4 mt-4 border-t border-[#E9E1DC]">
+            <NavLink
+              :href="route('logout')"
+              method="post"
+              class="flex items-center gap-3 hover:bg-[#F7E6E2] px-4 py-3 rounded-xl transition-all duration-300 text-[#2E2E38]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Se déconnecter
+            </NavLink>
+          </div>
         </nav>
       </aside>
     </transition>
 
-
     <!-- Header -->
-    <header class="w-full flex items-center justify-between px-6 py-4 bg-[#d9e2e7]">
-      <button class="text-3xl" @click="toggleSidebar">☰</button>
-      <div class="flex items-center space-x-2">
-        <img src="/images/logoMR.png" alt="Logo MatchRoom"
-             class="h-10 mb-4 transform transition-transform duration-300 hover:scale-105" />
+    <header class="w-full flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b border-[#E9E1DC]">
+      <button @click="toggleSidebar" class="text-[#2E2E38] hover:text-[#FF135F] transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <div class="flex items-center">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoMR-TakbHOAaljFXg5P560GFVsP1M2q0Tx.png" alt="Logo MatchRoom" class="h-10 transform transition-transform duration-300 hover:scale-105" />
       </div>
-      <div class="w-8 h-8"></div>
+
+      <div class="w-6"></div>
     </header>
 
     <!-- Main Card -->
     <div
-        class="relative w-[92%] max-w-5xl rounded-[30px] overflow-hidden bg-white shadow-2xl mt-20 transition-transform duration-300 ease-in-out"
-        :class="{ 'scale-90 opacity-50': animate }"
+      class="relative w-[92%] max-w-5xl rounded-2xl overflow-hidden bg-white shadow-xl mt-12 transition-transform duration-300 ease-in-out border border-[#E9E1DC]"
+      :class="{ 'scale-90 opacity-50': animate }"
     >
       <!-- Progression -->
-      <div class="absolute top-0 left-0 w-full h-2 flex bg-gray-300 px-2 pt-1">
+      <div class="absolute top-0 left-0 w-full h-1 flex bg-[#E9E1DC] z-10">
         <template v-for="(room, index) in rooms" :key="index">
-          <div class="flex-1 mx-1 h-1 rounded-full" :class="{ 'bg-pink-500': index <= currentIndex, 'bg-white': index > currentIndex }"></div>
+          <div class="flex-1 mx-0.5" :class="{ 'bg-[#FF135F]': index <= currentIndex, 'bg-[#E9E1DC]': index > currentIndex }"></div>
         </template>
       </div>
 
@@ -225,33 +246,39 @@ setInterval(updateCountdown, 1000);
       <img :src="rooms[currentIndex].image" :alt="rooms[currentIndex].name" class="w-full h-[500px] object-cover" />
 
       <!-- Infos -->
-      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 w-[60%] bg-[#d9e2e7] rounded-[30px] px-8 py-5 flex justify-between items-center shadow-md">
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[70%] bg-white/90 backdrop-blur-sm rounded-2xl px-8 py-5 flex justify-between items-center shadow-lg border border-[#E9E1DC]">
         <div>
-          <h2 class="text-lg font-bold text-gray-800">{{ rooms[currentIndex].name }}</h2>
-          <p class="text-sm text-gray-700">{{ rooms[currentIndex].location }}</p>
+          <h2 class="text-xl font-bold text-[#0E2748]">{{ rooms[currentIndex].name }}</h2>
+          <p class="text-[#2E2E38]/70 flex items-center mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {{ rooms[currentIndex].location }}
+          </p>
         </div>
-        <div class="text-lg font-semibold text-gray-900">{{ rooms[currentIndex].price }}€</div>
+        <div class="text-xl font-semibold text-[#FF135F]">{{ rooms[currentIndex].price }}€</div>
       </div>
 
       <!-- Actions -->
       <div class="absolute bottom-6 left-0 right-0 flex justify-between px-10">
-        <button @click="dislikeRoom" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition transform" :class="{ 'scale-125': xClicked }">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button @click="dislikeRoom" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F7E6E2] transition-all duration-300 transform border border-[#E9E1DC]" :class="{ 'scale-125': xClicked }">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#2E2E38]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
         <div class="flex items-center gap-4">
-          <button @click="likeRoom" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition transform" :class="{ 'scale-125': heartClicked }">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" :class="{ 'text-pink-500': heartClicked, 'text-pink-300': !heartClicked }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button @click="likeRoom" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F7E6E2] transition-all duration-300 transform border border-[#E9E1DC]" :class="{ 'scale-125': heartClicked }">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" :class="{ 'text-[#FF135F] fill-[#FF135F]': heartClicked, 'text-[#FF135F]': !heartClicked }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </button>
 
           <div class="flex flex-col items-center">
-            <button @click="openNegotiation" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h6m-6 8h8a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v13l4-4z" />
+            <button @click="openNegotiation" class="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F7E6E2] transition-all duration-300 border border-[#E9E1DC]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </button>
           </div>
@@ -261,35 +288,99 @@ setInterval(updateCountdown, 1000);
 
     <!-- Popup Discussion -->
     <transition name="fade">
-      <div v-if="showChat" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-xl shadow-xl p-4 z-50 border border-gray-300">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-700">
+      <div v-if="showChat" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-xl shadow-xl p-6 z-50 border border-[#E9E1DC]">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold text-[#0E2748]">
             {{ currentNegotiation ? 'Suivi de votre proposition' : 'Proposer un prix' }}
           </h3>
-          <button @click="showChat = false" class="text-gray-500 hover:text-red-500 text-sm">✖</button>
+          <button @click="showChat = false" class="text-[#2E2E38] hover:text-[#FF135F] transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         <template v-if="!currentNegotiation">
-          <form @submit.prevent="submitNegotiation">
-            <div class="flex items-center border rounded-lg overflow-hidden">
-              <input v-model.number="proposedPrice" type="number" min="1" placeholder="Montant" class="w-full px-4 py-2 focus:outline-none" required />
-              <span class="px-3 text-gray-600 font-semibold">€</span>
+          <div class="mb-6">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-full bg-[#F7E6E2] flex items-center justify-center mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm text-[#2E2E38]/70">Prix affiché</div>
+                <div class="text-xl font-semibold text-[#2E2E38]">{{ rooms[currentIndex].price }}€</div>
+              </div>
             </div>
-            <button type="submit" class="w-full mt-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition">Envoyer</button>
-          </form>
+            
+            <form @submit.prevent="submitNegotiation" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-[#2E2E38] mb-1">Votre proposition</label>
+                <div class="flex items-center border border-[#E9E1DC] rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-[#FF135F] focus-within:border-transparent">
+                  <input 
+                    v-model.number="proposedPrice" 
+                    type="number" 
+                    min="1" 
+                    placeholder="Montant" 
+                    class="w-full px-4 py-3 focus:outline-none" 
+                    required 
+                  />
+                  <span class="px-4 text-[#2E2E38] font-semibold">€</span>
+                </div>
+              </div>
+              
+              <button 
+                type="submit" 
+                class="w-full bg-[#FF135F] hover:bg-[#FF135F]/90 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Envoyer ma proposition
+              </button>
+            </form>
+          </div>
+          
+          <div class="text-xs text-[#2E2E38]/60 text-center">
+            L'hôtelier a jusqu'à 3 heures pour répondre à votre proposition
+          </div>
         </template>
 
         <template v-else>
-          <div class="text-sm text-gray-500 mb-2">
-            Temps de réponse estimé : <strong>{{ countdownTime }}</strong>
+          <div class="bg-[#F7E6E2] p-4 rounded-xl mb-4">
+            <div class="text-sm text-[#2E2E38]/70 mb-2 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Temps de réponse estimé : <strong>{{ countdownTime }}</strong>
+            </div>
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FF135F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-[#0E2748]">Vous avez proposé</div>
+                <div class="text-lg font-semibold text-[#FF135F]">{{ currentNegotiation.price }}€</div>
+              </div>
+            </div>
           </div>
-          <div class="bg-gray-100 p-3 rounded-lg shadow text-sm text-gray-800">
-            💬 Vous avez proposé <strong>{{ currentNegotiation.price }}€</strong><br />
-            L’hôtel a jusqu’à 3h pour répondre.
+          
+          <div class="text-sm text-[#2E2E38]/70 mb-4">
+            L'hôtel a jusqu'à 3h pour répondre à votre proposition. Vous recevrez une notification dès qu'une réponse sera disponible.
           </div>
+          
+          <button @click="showChat = false" class="w-full bg-[#E9E1DC] hover:bg-[#D6E1E5] text-[#2E2E38] font-medium py-3 px-4 rounded-xl transition-all duration-300">
+            Fermer
+          </button>
         </template>
       </div>
     </transition>
+    
+    <!-- Overlay pour le popup -->
+    <div v-if="showChat" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" @click="showChat = false"></div>
   </div>
 </template>
 
