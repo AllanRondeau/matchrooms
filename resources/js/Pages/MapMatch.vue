@@ -12,11 +12,19 @@ const props = defineProps([
 ])
 
 const searchQuery = ref(props.query || '')
+const isLoading = ref(false)
 
 const searchHotels = () => {
+  if (!searchQuery.value.trim()) return
+
+  isLoading.value = true
+
   router.get('/map', { q: searchQuery.value }, {
     preserveState: true,
     replace: true,
+    onFinish: () => {
+      isLoading.value = false
+    }
   })
 }
 </script>
@@ -25,46 +33,107 @@ const searchHotels = () => {
   <div class="min-h-screen bg-[#d9e2e7] flex flex-col">
 
     <!-- Header -->
-    <header class="w-full py-4 flex justify-center items-center">
-      <img src="https://placehold.co/32x32?text=🏠" class="w-8 h-8 mr-2" />
-      <h1 class="text-2xl font-bold text-pink-600">
-        Match<span class="text-gray-900">Room</span>
-      </h1>
+    <header class="w-full flex items-center justify-between px-6 py-4 bg-[#d9e2e7]">
+      <button class="text-3xl">☰</button>
+
+      <div class="flex items-center space-x-2">
+        <img src="/images/logoMR.png" alt="Logo MatchRoom"
+             class="h-10 mb-4 transform transition-transform duration-300 hover:scale-105" />
+      </div>
+
+      <div class="w-8 h-8"></div>
     </header>
 
-    <!-- Bannière -->
-    <div class="w-full px-4 mt-2 mb-4">
-      <div class="bg-[#f7e6e6] border-4 border-pink-500 rounded-xl text-center py-3 text-lg font-bold text-black w-full">
-        💘 Ton crush peut se trouver n’importe où !
-      </div>
-    </div>
+
 
     <!-- Grille -->
     <div class="flex flex-1 px-4 pb-6 gap-4">
       <!-- Colonne gauche -->
       <div class="w-1/3 bg-[#d1d5db] rounded-xl p-4 space-y-4">
 
-        <!-- Recherche -->
-        <input
-            v-model="searchQuery"
-            @keydown.enter="searchHotels"
-            type="text"
-            placeholder="Barre de recherche"
-            class="w-full px-4 py-2 rounded-full text-center font-semibold bg-white shadow"
-        />
+        <!-- Barre de recherche + bouton -->
+        <!-- Barre de recherche + bouton -->
+        <div class="flex justify-center gap-2 mt-2 mb-4 px-2">
+          <input
+              v-model="searchQuery"
+              @keydown.enter="searchHotels"
+              type="text"
+              placeholder="Barre de recherche"
+              class="w-full px-4 py-2 rounded-full text-center font-semibold bg-white shadow focus:outline-none focus:ring-2 focus:ring-pink-500"
+          />
+          <button
+              @click="searchHotels"
+              class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2 rounded-full shadow"
+          >
+            Rechercher
+          </button>
+        </div>
+
+
+        <!-- Loader -->
+        <div v-if="isLoading" class="flex justify-center my-6">
+          <svg class="animate-spin h-6 w-6 text-pink-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg>
+        </div>
+
+        <!-- Feedback mots-clés -->
+        <div v-if="!isLoading && keywords && Object.keys(keywords).length" class="text-sm text-gray-700">
+          <p class="mt-2">🔍 Mots-clés détectés :</p>
+          <ul class="flex flex-wrap gap-1 mt-1">
+            <li v-for="(val, key) in keywords" :key="key" class="px-2 py-1 bg-pink-300 text-white rounded-full text-xs">
+              {{ val }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Accueil sympa quand pas de recherche -->
+        <div v-if="!isLoading && searchQuery.trim() === ''" class="  p-6 mt-6 text-center">
+          <h2 class="text-xl font-bold text-gray-800 mb-2">Commence ton voyage</h2>
+          <p class="text-gray-600 text-sm">Tape une envie, une ambiance ou un lieu pour découvrir des hôtels qui matchent avec toi.</p>
+        </div>
+
 
         <!-- Résultats -->
-        <div v-for="hotel in hotels" :key="hotel.id" class="bg-white rounded-lg shadow-md overflow-hidden">
-          <img :src="hotel.image_url || 'https://placehold.co/300x200'" :alt="hotel.name" class="w-full h-40 object-cover" />
-          <div class="p-3 text-sm font-semibold text-gray-800">
-            {{ hotel.name }}<br />
-            {{ hotel.location }}
+        <div v-else-if="!isLoading && hotels.length > 0" class="mt-4 space-y-4">
+          <div v-for="hotel in hotels" :key="hotel.id" class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img :src="hotel.image_url || 'https://placehold.co/300x200'" :alt="hotel.name" class="w-full h-40 object-cover" />
+            <div class="p-3 text-sm font-semibold text-gray-800">
+              {{ hotel.name }}<br />
+              {{ hotel.location }}
+            </div>
           </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div v-else-if="!isLoading && suggestedHotels.length > 0" class="mt-4">
+          <h2 class="text-md font-semibold text-pink-800 mb-2">Suggestions proches 💡</h2>
+          <div v-for="hotel in suggestedHotels" :key="hotel.id" class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img :src="hotel.image_url || 'https://placehold.co/300x200'" :alt="hotel.name" class="w-full h-40 object-cover" />
+            <div class="p-3 text-sm font-semibold text-gray-800">
+              {{ hotel.name }}<br />
+              {{ hotel.location }}
+              <p class="text-xs text-pink-600 italic mt-1">
+                (Suggestion basée sur "{{ hotel.suggestion_term }}")
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aucun résultat -->
+        <div v-else-if="!isLoading" class="text-gray-600 mt-4">
+          Aucun hôtel trouvé pour cette recherche 🥲
         </div>
       </div>
 
       <!-- Carte -->
       <div class="flex-1 rounded-xl overflow-hidden">
+        <div class="w-full px-4 mt-2 mb-4">
+          <div class="bg-[#f7e6e6] border-4 border-pink-500 rounded-xl text-center py-3 text-lg font-bold text-black w-full">
+            Ton crush peut se trouver n’importe où !
+          </div>
+        </div>
         <iframe
             class="w-full h-full rounded-xl"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.999555553087!2d2.2922923156733315!3d48.85884407928761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66fdd37bffa1d%3A0x5a4aa7b94aa4f9c!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1633012747560!5m2!1sfr!2sfr"

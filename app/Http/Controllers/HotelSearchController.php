@@ -37,15 +37,12 @@ class HotelSearchController extends Controller
             $queryBuilder = Hotel::query();
 
             foreach ($viewTerms as $term) {
-                $queryBuilder->where(function($q) use ($term) {
-                    $q->where('description', 'ilike', '%' . $term . '%')
-                        ->orWhereRaw("(description->>'vue_{$term}')::boolean = true")
-                        ->orWhereRaw("(description->>'semantic_{$term}')::boolean = true");
+                $queryBuilder->orWhere(function($q) use ($term) {
+                    $q->where('description', 'ilike', '%' . $term . '%');
 
                     $synonyms = app(HuggingFaceSemanticService::class)->findSynonyms($term);
                     foreach ($synonyms as $synonym) {
-                        $q->orWhere('description', 'ilike', '%' . $synonym . '%')
-                            ->orWhereRaw("(description->>'semantic_{$synonym}')::boolean = true");
+                        $q->orWhere('description', 'ilike', '%' . $synonym . '%');
                     }
                 });
             }
@@ -61,9 +58,12 @@ class HotelSearchController extends Controller
             $term = $suggestion['type'];
 
             $results = Hotel::where(function($q) use ($term) {
-                $q->where('description', 'ilike', '%' . $term . '%')
-                    ->orWhereRaw("(description->>'vue_{$term}')::boolean = true")
-                    ->orWhereRaw("(description->>'semantic_{$term}')::boolean = true");
+                $q->where('description', 'ilike', '%' . $term . '%');
+
+                $synonyms = app(HuggingFaceSemanticService::class)->findSynonyms($term);
+                foreach ($synonyms as $synonym) {
+                    $q->orWhere('description', 'ilike', '%' . $synonym . '%');
+                }
             })->take(2)->get();
 
             if ($results->isNotEmpty()) {

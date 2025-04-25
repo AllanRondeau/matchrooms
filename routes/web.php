@@ -69,4 +69,6 @@ Route::get('/map', function () {
 Route::get('/map', [HotelSearchController::class, 'search']);
 
 
+
+
 require __DIR__ . '/auth.php';
