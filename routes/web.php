@@ -75,6 +75,13 @@ Route::get('/map', function () {
     return Inertia::render('MapMatch');
 });
 Route::get('/map', [HotelSearchController::class, 'search']);
+Route::get('/liked-rooms', function () {
+    return Inertia::render('LikedRooms');
+});
+Route::get('/negociations', function () {
+    return Inertia::render('Negociations');
+});
+
 
 
 

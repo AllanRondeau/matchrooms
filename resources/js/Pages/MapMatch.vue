@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3' ;
+
 
 const props = defineProps([
   'hotels',
@@ -13,6 +15,12 @@ const props = defineProps([
 
 const searchQuery = ref(props.query || '')
 const isLoading = ref(false)
+
+// Toggle Sidebar
+const sidebarVisible = ref(false)
+const toggleSidebar = () => {
+  sidebarVisible.value = !sidebarVisible.value
+}
 
 const searchHotels = () => {
   if (!searchQuery.value.trim()) return
@@ -32,9 +40,42 @@ const searchHotels = () => {
 <template>
   <div class="min-h-screen bg-[#d9e2e7] flex flex-col">
 
-    <!-- Header -->
+    <!-- SIDEBAR -->
+    <transition name="slide">
+      <aside
+          v-if="sidebarVisible"
+          class="fixed top-0 left-0 h-full w-64 bg-[#d9e2e7] shadow-md z-50 flex flex-col p-6 space-y-6 border-r border-gray-300"
+      >
+        <!-- Header du menu -->
+        <div class="flex justify-between items-center mb-6">
+          <img src="/images/logoMR.png" alt="Logo MatchRoom" class="w-24" />
+          <button @click="toggleSidebar" class="text-gray-500 hover:text-pink-500 text-2xl transition">
+            ✖
+          </button>
+        </div>
+
+        <!-- Liens du menu -->
+        <nav class="flex flex-col gap-4 text-[#2D2C33] font-semibold">
+          <a href="/home" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+            <span>Swipe page</span>
+          </a>
+          <a href="/liked-rooms" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Liked Rooms</span>
+          </a>
+
+          <Link href="/negociations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+            <span>Négociations en cours</span>
+          </Link>
+          <a href="/reservations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Reservations</span>
+          </a>
+        </nav>
+      </aside>
+    </transition>
+
+    <!-- HEADER -->
     <header class="w-full flex items-center justify-between px-6 py-4 bg-[#d9e2e7]">
-      <button class="text-3xl">☰</button>
+      <button class="text-3xl" @click="toggleSidebar">☰</button>
 
       <div class="flex items-center space-x-2">
         <img src="/images/logoMR.png" alt="Logo MatchRoom"
@@ -44,15 +85,12 @@ const searchHotels = () => {
       <div class="w-8 h-8"></div>
     </header>
 
-
-
-    <!-- Grille -->
+    <!-- CONTENU -->
     <div class="flex flex-1 px-4 pb-6 gap-4">
+
       <!-- Colonne gauche -->
       <div class="w-1/3 bg-[#d1d5db] rounded-xl p-4 space-y-4">
-
-        <!-- Barre de recherche + bouton -->
-        <!-- Barre de recherche + bouton -->
+        <!-- Barre de recherche -->
         <div class="flex justify-center gap-2 mt-2 mb-4 px-2">
           <input
               v-model="searchQuery"
@@ -69,7 +107,6 @@ const searchHotels = () => {
           </button>
         </div>
 
-
         <!-- Loader -->
         <div v-if="isLoading" class="flex justify-center my-6">
           <svg class="animate-spin h-6 w-6 text-pink-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -78,7 +115,7 @@ const searchHotels = () => {
           </svg>
         </div>
 
-        <!-- Feedback mots-clés -->
+        <!-- Mots-clés -->
         <div v-if="!isLoading && keywords && Object.keys(keywords).length" class="text-sm text-gray-700">
           <p class="mt-2">🔍 Mots-clés détectés :</p>
           <ul class="flex flex-wrap gap-1 mt-1">
@@ -88,12 +125,11 @@ const searchHotels = () => {
           </ul>
         </div>
 
-        <!-- Accueil sympa quand pas de recherche -->
-        <div v-if="!isLoading && searchQuery.trim() === ''" class="  p-6 mt-6 text-center">
+        <!-- Accueil par défaut -->
+        <div v-if="!isLoading && searchQuery.trim() === ''" class="p-6 mt-6 text-center">
           <h2 class="text-xl font-bold text-gray-800 mb-2">Commence ton voyage</h2>
           <p class="text-gray-600 text-sm">Tape une envie, une ambiance ou un lieu pour découvrir des hôtels qui matchent avec toi.</p>
         </div>
-
 
         <!-- Résultats -->
         <div v-else-if="!isLoading && hotels.length > 0" class="mt-4 space-y-4">
@@ -114,9 +150,7 @@ const searchHotels = () => {
             <div class="p-3 text-sm font-semibold text-gray-800">
               {{ hotel.name }}<br />
               {{ hotel.location }}
-              <p class="text-xs text-pink-600 italic mt-1">
-                (Suggestion basée sur "{{ hotel.suggestion_term }}")
-              </p>
+              <p class="text-xs text-pink-600 italic mt-1">(Suggestion basée sur "{{ hotel.suggestion_term }}")</p>
             </div>
           </div>
         </div>
@@ -145,3 +179,17 @@ const searchHotels = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.slide-enter-active, .slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+</style>
