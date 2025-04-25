@@ -15,7 +15,7 @@ class Hotel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'hotelier_id',
+        'user_id',
         'name',
         'description',
         'address',
@@ -44,7 +44,7 @@ class Hotel extends Model
      */
     public function hotelier()
     {
-        return $this->belongsTo(Hotelier::class);
+        return $this->belongsTo(User::class);
     }
 
     /**

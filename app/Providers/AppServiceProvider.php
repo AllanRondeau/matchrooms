@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Vite::prefetch(concurrency: 3);
+        $this->app->singleton('home.redirect', function ($app) {
+            return function (Request $request) {
+                if ($request->user() && $request->user()->hasRole('hotelier')) {
+                    return route('pro.dashboard');
+                }
+
+                return route('home');
+            };
+        });
     }
 }
