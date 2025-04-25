@@ -48,7 +48,7 @@ const confirmDelete = (id) => {
             <div class="p-6">
               <div class="flex justify-between items-start mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">{{ roomType.name }}</h3>
-                <div class="text-xl font-bold text-blue-600">{{ roomType.price_per_night }}€<span class="text-sm text-gray-600">/nuit</span></div>
+                <div class="text-xl font-bold text-blue-600">{{ roomType.base_price }}€<span class="text-sm text-gray-600">/nuit</span></div>
               </div>
 
               <p class="text-gray-600 mb-4">{{ roomType.description }}</p>
