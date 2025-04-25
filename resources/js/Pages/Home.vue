@@ -42,9 +42,17 @@ const toggleSidebar = () => {
 };
 
 const likeRoom = () => {
+  const currentRoom = rooms[currentIndex.value];
+  const existing = JSON.parse(localStorage.getItem('likedRooms')) || [];
+
+  if (!existing.some(room => room.id === currentRoom.id)) {
+    existing.push(currentRoom);
+    localStorage.setItem('likedRooms', JSON.stringify(existing));
+  }
+
   heartClicked.value = true;
   triggerAnimation();
-  console.log('Liked:', rooms[currentIndex.value]);
+  console.log('Liked and saved:', currentRoom);
 };
 
 const dislikeRoom = () => {
@@ -74,23 +82,45 @@ const triggerAnimation = () => {
 const submitNegotiation = () => {
   if (proposedPrice.value <= 0) return;
 
-  const price = proposedPrice.value;
-  const hotelId = rooms[currentIndex.value].id;
+  const room = rooms[currentIndex.value];
 
-  negotiationSent.value[hotelId] = {
-    price,
+  const negotiation = {
+    id: room.id,
+    name: room.name,
+    location: room.location,
+    image: room.image,
+    basePrice: room.price,
+    proposedPrice: proposedPrice.value,
+    sentAt: new Date().toISOString(),
+    expiresAt: new Date(new Date().getTime() + 3 * 60 * 60 * 1000).toISOString(), // expire dans 3h
+  };
+
+  // Sauvegarder dans localStorage
+  const existingNegotiations = JSON.parse(localStorage.getItem('negotiations')) || [];
+  const alreadyExists = existingNegotiations.find(n => n.id === negotiation.id);
+
+  if (!alreadyExists) {
+    existingNegotiations.push(negotiation);
+    localStorage.setItem('negotiations', JSON.stringify(existingNegotiations));
+  }
+
+  // Logique actuelle
+  negotiationSent.value[room.id] = {
+    price: proposedPrice.value,
     sentAt: new Date(),
     expiresAt: new Date(new Date().getTime() + 3 * 60 * 60 * 1000),
   };
 
-  currentNegotiation.value = negotiationSent.value[hotelId];
+  currentNegotiation.value = negotiationSent.value[room.id];
   showChat.value = false;
   proposedPrice.value = '';
 
-  alert(`💬 Votre prix de ${price}€ a été envoyé ! Il sera étudié dans un délai de 3 heures.`);
+  alert(`💬 Votre prix de ${negotiation.proposedPrice}€ a été envoyé ! Il sera étudié dans un délai de 3 heures.`);
 
   nextRoom();
 };
+
+
 
 const openNegotiation = () => {
   const hotelId = rooms[currentIndex.value].id;
@@ -130,21 +160,36 @@ setInterval(updateCountdown, 1000);
 
     <!-- SIDEBAR -->
     <transition name="slide">
-      <div
+      <aside
           v-if="sidebarVisible"
-          class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 p-6 space-y-6 border-r border-gray-200"
+          class="fixed top-0 left-0 h-full w-64 bg-[#d6E1E5] shadow-md z-50 flex flex-col p-6 space-y-6 border-r border-gray-300"
       >
-        <button @click="toggleSidebar" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl">✖</button>
-        <img src="/images/logoMR.png" alt="Logo MatchRoom" class="w-24 mx-auto mb-6" />
+        <!-- Header du menu -->
+        <div class="flex justify-between items-center mb-6">
+          <img src="/images/logoMR.png" alt="Logo MatchRoom" class="w-24" />
+          <button @click="toggleSidebar" class="text-gray-500 hover:text-pink-500 text-2xl transition">
+            ✖
+          </button>
+        </div>
 
-        <nav class="space-y-4 text-gray-700 font-semibold">
-          <a href="#" class="block hover:text-pink-600">💖 Toutes les chambres likées</a>
-          <a href="#" class="block hover:text-pink-600">🗺️ Map Finder</a>
-          <a href="#" class="block hover:text-pink-600">💬 Négociations en cours</a>
-          <a href="#" class="block hover:text-pink-600">📅 Mes réservations</a>
+        <!-- Liens du menu -->
+        <nav class="flex flex-col gap-4 text-[#2D2C33] font-semibold">
+          <a href="/liked-rooms" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Toutes les chambres likées</span>
+          </a>
+          <a href="/map" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Map Finder</span>
+          </a>
+          <a href="/negociations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Négociations en cours</span>
+          </a>
+          <a href="#" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+             <span>Mes réservations</span>
+          </a>
         </nav>
-      </div>
+      </aside>
     </transition>
+
 
     <!-- Header -->
     <header class="w-full flex items-center justify-between px-6 py-4 bg-[#d9e2e7]">
@@ -206,7 +251,7 @@ setInterval(updateCountdown, 1000);
       </div>
     </div>
 
-    <!-- Popup discussion -->
+    <!-- Popup Discussion -->
     <transition name="fade">
       <div v-if="showChat" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-xl shadow-xl p-4 z-50 border border-gray-300">
         <div class="flex justify-between items-center mb-4">

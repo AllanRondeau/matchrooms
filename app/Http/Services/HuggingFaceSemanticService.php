@@ -16,7 +16,7 @@ class HuggingFaceSemanticService
     /**
      * Extrait les mots-clés d'une requête
      */
-    public function extractKeywords(string $query): array
+    public function extractKeywords(?string $query): array
     {
         // Nettoyer et préparer la requête
         $processedQuery = $this->preprocessText($query);
@@ -55,7 +55,7 @@ class HuggingFaceSemanticService
     /**
      * Prétraitement du texte: suppression des accents, passage en minuscules
      */
-    private function preprocessText(string $text): string
+    private function preprocessText(?string $text): string
     {
         $text = strtolower($text);
         $text = preg_replace('/[^\p{L}\p{N}\s]/u', '', $text);
