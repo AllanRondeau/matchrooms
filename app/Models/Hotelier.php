@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Hotelier extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,10 +17,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
         'email',
         'password',
+        'company_name',
+        'contact_name',
         'phone_number',
         'status',
     ];
@@ -46,57 +46,15 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the user's full name.
+     * Get the hotels managed by this hotelier.
      */
-    public function getFullNameAttribute()
+    public function hotels()
     {
-        return "{$this->first_name} {$this->last_name}";
+        return $this->hasMany(Hotel::class);
     }
 
     /**
-     * Get the user's negotiations.
-     */
-    public function negotiations()
-    {
-        return $this->hasMany(Negotiation::class);
-    }
-
-    /**
-     * Get the user's reservations.
-     */
-    public function reservations()
-    {
-        return $this->hasMany(Reservation::class);
-    }
-
-    /**
-     * Get the user's reviews.
-     */
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    /**
-     * Get the user's badges.
-     */
-    public function badges()
-    {
-        return $this->belongsToMany(Badge::class, 'user_badges')
-            ->withPivot('awarded_at', 'progress')
-            ->withTimestamps();
-    }
-
-    /**
-     * Get the user's preferences.
-     */
-    public function preferences()
-    {
-        return $this->hasOne(UserPreference::class);
-    }
-
-    /**
-     * Get the roles that belong to the user.
+     * Get the roles that belong to the hotelier.
      */
     public function roles()
     {
@@ -104,7 +62,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user has the given role.
+     * Check if the hotelier has the given role.
      */
     public function hasRole($roleName)
     {
