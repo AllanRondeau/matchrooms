@@ -17,6 +17,13 @@ const rooms = [
     image: "https://placehold.co/1000x600?text=Grand+Hôtel+Royal",
     price: 150,
   },
+  {
+    id: 3,
+    name: " Hôtel ",
+    location: "Paris, France",
+    image: "https://placehold.co/1000x600?text=Grand+Hôtel+Royal",
+    price: 45,
+  },
 ];
 
 const currentIndex = ref(0);
@@ -121,7 +128,7 @@ setInterval(updateCountdown, 1000);
 </script>
 
 <template>
-  <div class="relative min-h-screen bg-[#d9e2e7] flex flex-col items-center">
+  <div class="relative min-h-screen bg-[#d6E1E5] flex flex-col items-center">
 
     <!-- Header -->
     <header class="w-full flex items-center justify-between px-6 py-4 bg-[#d9e2e7]">

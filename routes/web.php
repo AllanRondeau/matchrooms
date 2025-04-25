@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\HotelSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomTypeController;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LandingController;
@@ -63,5 +62,13 @@ Route::middleware(['auth', 'verified', 'role:hotelier'])->prefix('hotelier')->gr
         return Inertia::render('Pro/Statistics');
     })->name('pro.statistics');
 });
+
+Route::get('/map', function () {
+    return Inertia::render('MapMatch');
+});
+Route::get('/map', [HotelSearchController::class, 'search']);
+
+
+
 
 require __DIR__ . '/auth.php';
