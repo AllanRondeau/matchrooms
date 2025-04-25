@@ -41,12 +41,11 @@ class RegisteredUserController extends Controller
         if ($request->input('is_hotel')) {
             $rules['company_name'] = 'required|string|max:255';
         }
-        $validated = $request->validate($rules);
-
         $user = User::create([
-            'first_name' => $request->firstname,
-            'last_name' => $request->lastname,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
+            'phone' => $request->phone_number,
             'password' => Hash::make($request->password),
             'company_name' => $request->company_name,
         ]);
