@@ -22,9 +22,8 @@ const showingNavigationDropdown = ref(false);
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
                                 <Link :href="route('home')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
+                                  <img src="/images/logoMR.png" alt="Logo MatchRoom"
+                                       class="h-10 mb-4 transform transition-transform duration-300 hover:scale-105" />
                                 </Link>
                             </div>
 
