@@ -1,163 +1,145 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { useForm, Head, Link } from '@inertiajs/vue3';
+import { ref, computed, watch } from 'vue'
+import { useForm } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import AuthenticatedProLayout from "@/Layouts/AuthenticatedProLayout.vue";
 
 const props = defineProps({
-    hotel: {
-        type: Object,
-        default: null
-    }
-});
+  roomType: Object,
+  hotel: Object,
+  isEdit: Boolean,
+})
 
+const amenitiesInput = ref(
+    props.roomType?.amenities?.join(', ') || ''
+)
 const form = useForm({
-    name: props.hotel?.name || '',
-    description: props.hotel?.description || '',
-    address: props.hotel?.address || '',
-    city: props.hotel?.city || '',
-    country: props.hotel?.country || '',
-    postal_code: props.hotel?.postal_code || '',
-    star_rating: props.hotel?.star_rating || '',
-    amenities: props.hotel ? JSON.parse(props.hotel.amenities) : [],
-    photo: null, // Ce champ contiendra le File envoyé depuis l'input
-    status: props.hotel?.status || 'active',
-});
-
-const onPhotoChange = (e) => {
-    form.photo = e.target.files[0];
-};
-
-const amenitiesInput = ref('');
-watch(
-    () => form.amenities,
-    (newVal) => {
-        amenitiesInput.value = Array.isArray(newVal) ? newVal.join(", ") : '';
-    },
-    { immediate: true }
-);
+  hotel_id: props.hotel?.id || props.roomType?.hotel_id || '',
+  name: props.roomType?.name || '',
+  description: props.roomType?.description || '',
+  base_price: props.roomType?.base_price || '',
+  capacity: props.roomType?.capacity || 1,
+  stock_quantity: props.roomType?.stock_quantity || 1,
+  amenities: Array.isArray(props.roomType?.amenities)
+      ? props.roomType.amenities
+      : [],
+  images: [],
+  status: props.roomType?.status || 'active',
+})
 
 watch(amenitiesInput, (val) => {
-    const arr = val.split(",").map(s => s.trim()).filter(Boolean);
-    if (JSON.stringify(arr) !== JSON.stringify(form.amenities)) {
-        form.amenities = arr;
-    }
-});
+  form.amenities = val
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+})
 
-const isEdit = computed(() => !!props.hotel);
 const submit = () => {
-    if (isEdit.value) {
-        form.post(route('hotel.update', props.hotel.id), {
-            method: 'put',
-            forceFormData: true,
-            onSuccess: () => form.reset('photo')
-        });
-    } else {
-        form.post(route('hotel.store'), {
-            forceFormData: true,
-            onSuccess: () => form.reset()
-        });
-    }
-};
-
+  if (props.isEdit) {
+    form.post(route('room-types.update', props.roomType.id), {
+      method: 'put',
+      forceFormData: true,
+    })
+  } else {
+    form.post(route('room-types.store'), {
+      forceFormData: true,
+    })
+  }
+}
 </script>
 
 <template>
-    <Head title="Informations de l'hôtel" />
-    <AuthenticatedProLayout>
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ isEdit ? 'Modifier l\'hôtel' : 'Créer un hôtel' }}
-            </h2>
-        </template>
+  <Head :title="isEdit ? 'Modifier un type de chambre' : 'Ajouter un type de chambre'" />
+  <AuthenticatedProLayout>
+    <template #header>
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-[#101F44]">
+          {{ isEdit ? 'Modifier un type de chambre' : 'Ajouter un type de chambre' }}
+        </h2>
+        <Link
+            :href="route('pro.dashboard')"
+            class="px-4 py-2 bg-[#E8E3DF] hover:bg-[#F5E9E6] rounded text-[#2D2C33] shadow"
+        >
+          Retour
+        </Link>
+      </div>
+    </template>
+    <div class="py-10">
+      <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white border border-[#E8E3DF] rounded-2xl shadow-lg p-8">
+          <form @submit.prevent="submit" enctype="multipart/form-data" class="space-y-6">
+            <input type="hidden" v-model="form.hotel_id" />
 
-        <div class="py-12">
-            <div class="mx-auto max-w-2xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <form
-                        @submit.prevent="submit"
-                        enctype="multipart/form-data"
-                        class="space-y-6 p-6"
-                    >
-                        <div>
-                            <label class="block mb-1">Nom</label>
-                            <input v-model="form.name" type="text" class="w-full border rounded" />
-                            <div v-if="form.errors.name" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.name }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Description</label>
-                            <textarea v-model="form.description" class="w-full border rounded"></textarea>
-                            <div v-if="form.errors.description" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.description }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Adresse</label>
-                            <input v-model="form.address" type="text" class="w-full border rounded" />
-                            <div v-if="form.errors.address" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.address }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Ville</label>
-                            <input v-model="form.city" type="text" class="w-full border rounded" />
-                            <div v-if="form.errors.city" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.city }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Pays</label>
-                            <input v-model="form.country" type="text" class="w-full border rounded" />
-                            <div v-if="form.errors.country" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.country }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Code postal</label>
-                            <input v-model="form.postal_code" type="text" class="w-full border rounded" />
-                            <div v-if="form.errors.postal_code" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.postal_code }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Nombre d'étoiles</label>
-                            <input v-model="form.star_rating" type="number" min="1" max="5" class="w-full border rounded" />
-                            <div v-if="form.errors.star_rating" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.star_rating }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Équipements (séparés par une virgule)</label>
-                            <input v-model="amenitiesInput" type="text" class="w-full border rounded"
-                                   placeholder="Piscine,WiFi,Parking" />
-                            <div v-if="form.errors.amenities" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.amenities }}
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block mb-1">Photo de présentation</label>
-                            <input type="file" @change="onPhotoChange" accept="image/*" class="w-full border rounded" />
-                            <div v-if="form.errors.photo" class="text-sm text-red-600 mt-1">
-                                {{ form.errors.photo }}
-                            </div>
-                            <div v-if="isEdit && props.hotel && props.hotel.images && JSON.parse(props.hotel.images)[0]" class="mt-2">
-                                <span class="block text-sm text-gray-400">Photo actuelle:</span>
-                                <img
-                                    :src="`/storage/${JSON.parse(props.hotel.images)[0]}`"
-                                    alt="photo" class="w-32 h-20 object-cover rounded"
-                                >
-                            </div>
-                        </div>
-                        <button
-                            type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                        >
-                            {{ isEdit ? 'Mettre à jour' : 'Créer' }}
-                        </button>
-                    </form>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-[#101F44]">Nom de la chambre</label>
+                <input v-model="form.name" type="text" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2" />
+                <div v-if="form.errors.name" class="text-red-600 text-sm mt-1">{{ form.errors.name }}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-[#101F44]">Prix (€)</label>
+                <input v-model="form.base_price" type="number" step="0.01" min="0" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2" />
+                <div v-if="form.errors.base_price" class="text-red-600 text-sm mt-1">{{ form.errors.base_price }}</div>
+              </div>
             </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-[#101F44]">Description</label>
+              <textarea v-model="form.description" rows="4" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2"></textarea>
+              <div v-if="form.errors.description" class="text-red-600 text-sm mt-1">{{ form.errors.description }}</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-[#101F44]">Capacité</label>
+                <input v-model="form.capacity" type="number" min="1" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2" />
+                <div v-if="form.errors.capacity" class="text-red-600 text-sm mt-1">{{ form.errors.capacity }}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-[#101F44]">Quantité</label>
+                <input v-model="form.stock_quantity" type="number" min="1" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2" />
+                <div v-if="form.errors.stock_quantity" class="text-red-600 text-sm mt-1">{{ form.errors.stock_quantity }}</div>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-[#101F44]">Statut</label>
+                <select v-model="form.status" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2">
+                  <option value="active">Actif</option>
+                  <option value="inactive">Inactif</option>
+                </select>
+                <div v-if="form.errors.status" class="text-red-600 text-sm mt-1">{{ form.errors.status }}</div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-[#101F44]">Aménagements (séparés par des virgules)</label>
+              <input v-model="amenitiesInput" type="text" class="mt-1 w-full border border-[#D8E0E3] rounded-md px-4 py-2" placeholder="WiFi, TV, Salle de bain privée" />
+              <div v-if="form.errors.amenities" class="text-red-600 text-sm mt-1">{{ form.errors.amenities }}</div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-[#101F44]">Images (plusieurs possibles)</label>
+              <input
+                  type="file"
+                  multiple
+                  @change="e => form.images = Array.from(e.target.files)"
+                  class="mt-1 w-full"
+                  accept="image/*"
+              />
+              <div v-if="form.errors.images" class="text-red-600 text-sm mt-1">{{ form.errors.images }}</div>
+            </div>
+
+            <div class="flex justify-end">
+              <button
+                  type="submit"
+                  class="px-6 py-2 bg-[#EA3D69] text-white rounded hover:bg-[#d22c55] shadow"
+                  :disabled="form.processing"
+              >
+                {{ isEdit ? 'Mettre à jour' : 'Créer' }}
+              </button>
+            </div>
+          </form>
         </div>
-    </AuthenticatedProLayout>
+      </div>
+    </div>
+  </AuthenticatedProLayout>
 </template>
