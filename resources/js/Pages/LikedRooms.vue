@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Link } from '@inertiajs/vue3';
+import NavLink from "@/Components/NavLink.vue";
 
 
 const likedRooms = ref([])
@@ -28,8 +29,8 @@ const toggleSidebar = () => {
     <!-- SIDEBAR -->
     <transition name="slide">
       <aside
-          v-if="sidebarVisible"
-          class="fixed top-0 left-0 h-full w-64 bg-[#d9e2e7] shadow-md z-50 flex flex-col p-6 space-y-6 border-r border-gray-300"
+        v-if="sidebarVisible"
+        class="fixed top-0 left-0 h-full w-64 bg-[#d6E1E5] shadow-md z-50 flex flex-col p-6 space-y-6 border-r border-gray-300"
       >
         <!-- Header du menu -->
         <div class="flex justify-between items-center mb-6">
@@ -41,18 +42,24 @@ const toggleSidebar = () => {
 
         <!-- Liens du menu -->
         <nav class="flex flex-col gap-4 text-[#2D2C33] font-semibold">
-          <a href="/home" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-            <span>swipe page</span>
+          <a href="/liked-rooms" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+            <span>Toutes les chambres likées</span>
           </a>
           <a href="/map" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
-            <span>map finder</span>
+            <span>Map Finder</span>
           </a>
-          <Link href="/negociations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+          <a href="/negociations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
             <span>Négociations en cours</span>
-          </Link>
-          <a href="/reservations" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
+          </a>
+          <a href="#" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
             <span>Mes réservations</span>
           </a>
+          <NavLink
+            :href="route('logout')"
+            method="post"
+          >
+            Se déconnecter
+          </NavLink>
         </nav>
       </aside>
     </transition>

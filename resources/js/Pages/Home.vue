@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue';
+import DropdownLink from "@/Components/DropdownLink.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const rooms = [
   {
@@ -186,6 +188,12 @@ setInterval(updateCountdown, 1000);
           <a href="#" class="flex items-center gap-3 hover:bg-[#F5E9E6] px-4 py-3 rounded-xl transition">
              <span>Mes réservations</span>
           </a>
+          <NavLink
+            :href="route('logout')"
+            method="post"
+          >
+            Se déconnecter
+          </NavLink>
         </nav>
       </aside>
     </transition>
