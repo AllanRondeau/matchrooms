@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useForm, Head, Link } from '@inertiajs/vue3';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedProLayout from "@/Layouts/AuthenticatedProLayout.vue";
 
 const props = defineProps({
     hotel: {
@@ -63,7 +63,7 @@ const submit = () => {
 
 <template>
     <Head title="Informations de l'hôtel" />
-    <AuthenticatedLayout>
+    <AuthenticatedProLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ isEdit ? 'Modifier l\'hôtel' : 'Créer un hôtel' }}
@@ -159,5 +159,5 @@ const submit = () => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AuthenticatedProLayout>
 </template>

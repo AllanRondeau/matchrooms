@@ -15,16 +15,9 @@ class RoomType extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'hotel_id',
-        'name',
-        'description',
-        'base_price',
-        'capacity',
-        'amenities',
-        'images',
-        'stock_quantity',
-        'status',
+        'hotel_id', 'name', 'description', 'base_price', 'capacity', 'stock_quantity', 'amenities', 'images', 'status'
     ];
+
 
     /**
      * The attributes that should be cast.
