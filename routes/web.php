@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HotelSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RoomTypeLikeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::post('/room-type-like-toggle', [HomeController::class, 'toggleLike'])->middleware('auth');
+
+    Route::get('/likes', [RoomTypeLikeController::class, 'index'])->name('likes');
+    Route::delete('/likes/{like}', [RoomTypeLikeController::class, 'destroy'])->name('likes.destroy');
 });
 
 Route::middleware(['auth', 'verified', 'role:hotelier'])->prefix('hotelier')->group(function () {
